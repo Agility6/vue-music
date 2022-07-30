@@ -85,7 +85,8 @@ export default {
     /**
      * 设置轮播的宽度
      * 当我们改变视窗的时候 宽度也需要改变
-     * 所以我们要监听window事件
+     * 所以在mounted监听window事件
+     * isResize：判断是否是改变视窗
      */ 
     _setSliderWidth(isResize) {
       // 获取sliderGroup的children

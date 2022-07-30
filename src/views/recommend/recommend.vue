@@ -30,6 +30,9 @@ export default {
   },
   data() {
     return {
+      /**
+       * 模拟_getRecommend获取到的数据
+       */
       recommends: [
         {
           linkUrl: 'https://y.qq.com/n/ryqq/mv/004eWLVM11VqcV#',
