@@ -1,4 +1,7 @@
-# test
+<h1 align="center">Vue-music🎵</h1>
+
+> 本项目适合刚接触Vue 👀  
+> 可以先在本地运行起来，结合文档去一步步的拆解食用 🎆  
 
 ## Project setup
 ```
@@ -9,16 +12,3 @@ npm install
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
