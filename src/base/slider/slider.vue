@@ -176,6 +176,10 @@ export default {
       },this.interval) 
     }
   },
+  
+  destroyed() {
+    clearTimeout(this.timer)
+  }
 }
 </script>
 
