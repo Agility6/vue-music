@@ -2,6 +2,7 @@
   <div id="app">
     <m-header />
     <tab />
+    <!-- 避免重复发送请求 -->
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
