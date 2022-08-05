@@ -11,6 +11,7 @@ export default {
     /**
      *  决定是否派发 scroll 事件
      *  为 1，仅仅当手指按在滚动区域上，每隔 momentumLimitTime 毫秒派发一次 scroll 事件
+     *  为 3，任何时候都派发 scroll 事件，包括调用 scrollTo 或者触发 momentum 滚动动画
      */
     probeType: {
       type: Number,
@@ -23,6 +24,11 @@ export default {
     data: {
       type: Array,
       default: null
+    },
+    // scroll是否监听滚动事件
+    listenScroll: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -42,6 +48,15 @@ export default {
         probeType: this.probeType,
         click: this.click
       })
+
+      // 判断是否监听了scroll
+      if(this.listenScroll) {
+        let me = this
+        this.scroll.on('scroll', (pos) => {
+          // 派发事件
+          me.$emit('scroll', pos)
+        })
+      }
     },
 
     /**
@@ -56,7 +71,14 @@ export default {
     // 重新计算
     refresh() {
       this.scroll && this.scroll.refresh()
+    },
+    scrollTo() {
+      this.scroll && this.scroll.scrollTo.apply(this.scroll , arguments)
+    },
+    scrollToElement() {
+      this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)
     }
+    
   },
   watch: {
     /**

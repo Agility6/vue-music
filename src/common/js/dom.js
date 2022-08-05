@@ -10,7 +10,7 @@ export function addClass(el, className) {
     return
   }
   let newClass = el.className.split(' ')
-  newClass.push(className)
+  newClass.push(className)  
   el.className = newClass.join(' ')
 }
 
@@ -24,4 +24,12 @@ export function hasClass(el, className) {
   let reg = new RegExp('(^|\\s)'+className+'(\\s|$)')
   // 用来查看正则表达式与指定的字符串是否匹配。返回 true 或 false。
   return reg.test(el.className)
+}
+
+export function getData(el, name, val) {
+  const prefix = 'data-'
+  if(val) {
+    return el.setAttribute(prefix + name , val)
+  }
+  return el.getAttribute(prefix + name)
 }
