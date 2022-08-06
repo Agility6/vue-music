@@ -41,6 +41,12 @@
           </li>
       </ul>
     </div>
+    <div class="list-fixed" v-show="fixedTitle" ref="fixed">
+      <h1 class="fixed-title">{{ fixedTitle }}</h1>
+    </div>
+    <div v-show="!data.length" class="loading-container">
+      <loading />
+    </div>
   </scroll>
 </template>
 
@@ -52,10 +58,13 @@
  *  - 通过区间得到索引
  */
 import Scroll from '@/base/scroll/scroll';
+import Loading from '@/base/loading/loading'
 import { getData } from '@/common/js/dom'
 
 // 每个元素的高度
 const ANCHOR_HEIGHT = 18
+// 默认title高度
+const TITLE_HEIGHT = 30
 export default {
   props: {
     data: {
@@ -67,7 +76,10 @@ export default {
     return {
       scrollY: -1,
       // 当前位置
-      currentIndex: 0
+      currentIndex: 0,
+      // 顶部title更加流程转变
+      diff: -1
+
     }
   },
   created() {
@@ -113,6 +125,9 @@ export default {
         let height2 = listHeight[i + 1];
         if(-newY >= height1 && -newY < height2) {
           this.currentIndex = i
+          // 滚动的上线 - 滚动newY如果
+          // console.log(height2, newY);
+          this.diff = height2 + newY
           return
         }
       }
@@ -120,10 +135,22 @@ export default {
        * 当滚动到底部，且-newY大于最后一个元素的上限
        */  
       this.currentIndex = listHeight.length - 2
-    }
+    },
+    /**
+     * 当diff改变
+     */
+    diff(newVal) {
+     let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0 
+     if(this.fixedTop === fixedTop) {
+      return
+     }
+     this.fixedTop = fixedTop
+     this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
+    } 
   },
   components: {
-    Scroll
+    Scroll,
+    Loading
   },
   methods: {
     /**
@@ -205,6 +232,16 @@ export default {
       return this.data.map((group) => {
         return group.title.substr(0,1)
       })
+    },
+    /**
+     * 滑动时显示每个字母顶部的title
+     * 当向上滑动的时候，到达热门就不应该重复显示 
+     */
+    fixedTitle() { 
+      if(this.scrollY > 0 ){
+        return
+      }
+      return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
     }
   }
 }
