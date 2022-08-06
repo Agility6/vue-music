@@ -45,6 +45,12 @@
 </template>
 
 <script>
+/**
+ * 左右联动
+ *  - 需要实时的知道滚动的位置
+ *  - 计算当前滚动到哪个位置的区间
+ *  - 通过区间得到索引
+ */
 import Scroll from '@/base/scroll/scroll';
 import { getData } from '@/common/js/dom'
 
@@ -112,8 +118,7 @@ export default {
       }
       /**
        * 当滚动到底部，且-newY大于最后一个元素的上限
-       */
-      console.log(111); 
+       */  
       this.currentIndex = listHeight.length - 2
     }
   },
@@ -168,6 +173,15 @@ export default {
      * 注意：第二个参数的含义，控制滚动动画的时间
      */
     _scrollToElement(anchorIndex) {
+      if(!anchorIndex && anchorIndex !== 0) {
+        return
+      }
+      if(anchorIndex < 0) {
+        anchorIndex = 0
+      } else if(anchorIndex > this.listHeight.length - 2) {
+        anchorIndex = this.listHeight.length - 2
+      }
+      this.scrollY = -this.listHeight[anchorIndex]
       this.$refs.listview.scrollToElement(this.$refs.listGroup[anchorIndex], 0)
     },
     _calculateHeight() {
